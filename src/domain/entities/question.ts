@@ -1,11 +1,10 @@
-import { randomUUID } from 'node:crypto'
 import { Slug } from './value-objects/slug'
 import { Entity } from '../../core/entities/entity'
 import { UniqueEntityID } from '../../core/entities/unique-entity-id'
 import { Optional } from '../../core/types/optinonal'
 import dayjs from 'dayjs'
 
-interface QuestionProps { 
+interface QuestionProps {
   author_id: UniqueEntityID
   best_answer_id?: UniqueEntityID
   title: string
@@ -27,10 +26,22 @@ export class Question extends Entity<QuestionProps> {
   get excerpt() {
     return this.content.substring(0, 120).trimEnd().concat('...')
   }
-  
+
+  get content() {
+    return this.props.content
+  }
+
   set content(content: string) {
     this.props.content = this.content
     this.touch()
+  }
+
+  get title() {
+    return this.props.title
+  }
+
+  get best_answer_id() {
+    return this.props.best_answer_id
   }
 
   set title(title: string) {
@@ -44,12 +55,18 @@ export class Question extends Entity<QuestionProps> {
     this.touch()
   }
 
-  static create(props: Optional<QuestionProps, 'created_at' | 'slug'>, id?: UniqueEntityID) {
-    const question = new Question({
-      ...props,
-      slug: props.slug ?? Slug.createFromText(props.title),
-      created_at: new Date()
-    }, id)
+  static create(
+    props: Optional<QuestionProps, 'created_at' | 'slug'>,
+    id?: UniqueEntityID,
+  ) {
+    const question = new Question(
+      {
+        ...props,
+        slug: props.slug ?? Slug.createFromText(props.title),
+        created_at: new Date(),
+      },
+      id,
+    )
 
     return question
   }

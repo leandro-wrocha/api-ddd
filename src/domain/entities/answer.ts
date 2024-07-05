@@ -1,8 +1,8 @@
-import { Entity } from "../../core/entities/entity"
-import { UniqueEntityID } from "../../core/entities/unique-entity-id";
-import { Optional } from "../../core/types/optinonal";
+import { Entity } from '../../core/entities/entity'
+import { UniqueEntityID } from '../../core/entities/unique-entity-id'
+import { Optional } from '../../core/types/optinonal'
 
-interface AnswerProps { 
+interface AnswerProps {
   content: string
   author_id: UniqueEntityID
   question_id: UniqueEntityID
@@ -12,17 +12,16 @@ interface AnswerProps {
 
 export class Answer extends Entity<AnswerProps> {
   get content() {
-    return this.props.content;
+    return this.props.content
   }
 
   get author_id() {
-    return this.props.author_id;
+    return this.props.author_id
   }
 
   get question_id() {
-    return this.props.question_id;
+    return this.props.question_id
   }
-
 
   private touch() {
     this.props.updated_at = new Date()
@@ -31,7 +30,7 @@ export class Answer extends Entity<AnswerProps> {
   get excerpt() {
     return this.content.substring(0, 120).trimEnd().concat('...')
   }
-  
+
   set content(content: string) {
     this.props.content = this.content
     this.touch()
@@ -39,12 +38,15 @@ export class Answer extends Entity<AnswerProps> {
 
   static create(
     props: Optional<AnswerProps, 'created_at'>,
-    id?: UniqueEntityID
+    id?: UniqueEntityID,
   ) {
-    const answer = new Answer({
-      ...props,
-      created_at: new Date()
-    })
+    const answer = new Answer(
+      {
+        ...props,
+        created_at: new Date(),
+      },
+      id,
+    )
 
     return answer
   }

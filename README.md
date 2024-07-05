@@ -26,9 +26,10 @@ _clean architeture e domain-drive design não tem nada relação nenhum, posso t
 
 ### API Fórum
 
-- [] Muita dificuldade em saber as dúvidas dos alunos
-- [] Eu tenho que responder os alunos e eu me perco em quais duvídas já foram respondidas
+- [x] Muita dificuldade em saber as dúvidas dos alunos
+- [x] Eu tenho que responder os alunos e eu me perco em quais duvídas já foram respondidas
 
 _Entidades são palavras chaves no meu das conversas_
 _Casos de uso é como as entidades conversam entre si_
 _DRY - Don't repeat yourself_
+
