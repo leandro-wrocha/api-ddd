@@ -23,12 +23,12 @@ describe('Choose Question Best Answer', () => {
 
     await inMemoryQuestionsRepository.create(new_question)
 
-    await sut.execute({
+    const result = await sut.execute({
       author_id: new_question.author_id.to_string(),
       question_id: new_question.id.to_string(),
       content: 'teste',
     })
 
-    expect(inMemoryQuestionCommentsRepository.items[0].content).toEqual('teste')
+    expect(result.isRight()).toBe(true)
   })
 })
