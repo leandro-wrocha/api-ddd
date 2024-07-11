@@ -2,6 +2,7 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { makeQuestion } from 'test/factories/make-question'
 import { DeleteQuestionUseCase } from './delete-question'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let sut: DeleteQuestionUseCase
@@ -23,8 +24,12 @@ describe('Delete Question', () => {
 
     inMemoryQuestionsRepository.create(newQuestion)
 
-    await sut.execute({ question_id: 'question-1', author_id: 'author-1' })
+    const result = await sut.execute({
+      question_id: 'question-1',
+      author_id: 'author-1',
+    })
 
+    expect(result.isRight()).toBe(true)
     expect(inMemoryQuestionsRepository.items).toHaveLength(0)
   })
 
@@ -38,11 +43,11 @@ describe('Delete Question', () => {
 
     inMemoryQuestionsRepository.create(newQuestion)
 
-    expect(() => {
-      return sut.execute({
-        question_id: 'question-1',
-        author_id: 'author-2',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      question_id: 'question-1',
+      author_id: 'author-2',
+    })
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })
