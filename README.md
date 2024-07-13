@@ -33,3 +33,5 @@ _Entidades são palavras chaves no meu das conversas_
 _Casos de uso é como as entidades conversam entre si_
 _DRY - Don't repeat yourself_
 
+ - Aggregate root
+ - watched list
