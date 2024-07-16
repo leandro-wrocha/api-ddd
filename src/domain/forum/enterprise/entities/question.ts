@@ -3,8 +3,8 @@ import { Slug } from './value-objects/slug'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optinonal'
 import dayjs from 'dayjs'
-import { QuestionAttachment } from './question-attachment'
 import { QuestionAttachmentList } from './question-attachment-list'
+import { QuestionBestAnswerChosenEvent } from '../events/question-best-answer-chosen-event'
 
 export interface QuestionProps {
   author_id: UniqueEntityID
@@ -73,7 +73,21 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   set best_answer_id(best_answer_id: UniqueEntityID | undefined) {
+    if (best_answer_id === undefined) {
+      return
+    }
+
+    if (
+      this.props.best_answer_id === undefined ||
+      !this.props.best_answer_id.equals(best_answer_id)
+    ) {
+      this.addDomainEvent(
+        new QuestionBestAnswerChosenEvent(this, best_answer_id),
+      )
+    }
+
     this.props.best_answer_id = best_answer_id
+
     this.touch()
   }
 
